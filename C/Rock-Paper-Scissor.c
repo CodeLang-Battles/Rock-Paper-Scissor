@@ -15,7 +15,8 @@ C language
 
 #define FILE1 "player1.txt"
 #define FILE2 "player2.txt"
-#define BUF_SIZE 2
+#define BUF_SIZE 8000000
+#define PLAY_SIZE 10
 #define POSSIBLE_PLAYS 3
 
 
@@ -28,12 +29,12 @@ int readFile( Player *player, char *filename ){
                 fprintf(stderr, "ERROR: CANNOT OPEN FILE %s\n", filename);
                 return -1;
         }
-        
+
 	// read data from file
-	char buffer[BUF_SIZE], play[BUF_SIZE];
+	char buffer[BUF_SIZE], play[PLAY_SIZE];
 	int nRead = 0, i = 0;
 	while( ( nRead = fread( buffer, sizeof(char), BUF_SIZE, file ) ) > 0 ){		// read from file to a buffer
-		
+
 		for( i=0; i<nRead; i++ ){
 			if( buffer[i] == '\n' || buffer[i] == EOF ) continue;		// ignore this chars
 			else{						// create an auxiliary string save the play
@@ -43,7 +44,7 @@ int readFile( Player *player, char *filename ){
 			}
 		}
 	}
-	
+
 	// close the file
 	fclose( file );
 	return 0;
@@ -70,7 +71,7 @@ int main() {
                 fprintf(stderr, "ERROR: Error in function <readFile>\n");
                 return -1;
         }
-
+	
 	// check if the number of plays for both players are the same
 	if( Player_getDim( player1_moves ) != Player_getDim( player2_moves ) ){
 	    fprintf(stderr, "ERROR: Player 1 and Player 2 have a different number of moves!\n");
